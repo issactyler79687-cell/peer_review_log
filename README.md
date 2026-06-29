@@ -1,118 +1,42 @@
-# Stellar Notes DApp
+# peer_review_log
 
-**Stellar Notes DApp** - Blockchain-Based Decentralized Note-Taking System
+## Project Title
+peer_review_log
 
 ## Project Description
+Peer review is the backbone of academic integrity, yet most review records are locked inside closed editorial systems with no public audit trail. `peer_review_log` is a Soroban smart contract that turns each peer review into a permanent, tamper-proof on-chain record, so the existence and content hash of a review can be verified by anyone, at any time, without trusting a central server.
 
-Stellar Notes DApp is a decentralized smart contract solution built on the Stellar blockchain using Soroban SDK. It provides a secure, immutable platform for managing personal notes directly on the blockchain. The contract ensures that your data is stored transparently and is only manageable through predefined smart contract functions, eliminating reliance on centralized database providers.
-
-The system allows users to create, view, and delete notes, leveraging the efficiency and security of the Stellar network. Each note is uniquely identified and stored within the contract's instance storage, ensuring data persistence and reliability.
+The contract lets a student or reviewer submit a single signed review for each paper (paper_id), attaches a content hash of the review text, and stores an integer score in the 0-100 range. Per-paper aggregates (count and sum of scores) and a global review counter are maintained on-chain, giving downstream clients everything they need to render transparent review dashboards for the classroom.
 
 ## Project Vision
-
-Our vision is to revolutionize personal productivity in the digital age by:
-
-- **Decentralizing Data**: Moving note-taking from centralized servers to a global, distributed blockchain
-- **Ensuring Ownership**: Empowering users to have complete control and ownership over their digital thoughts and information
-- **Guaranteeing Immutability**: Providing a permanent, tamper-proof record of notes that cannot be altered or deleted by third parties
-- **Enhancing Privacy**: Leveraging blockchain security to protect personal information from unauthorized access
-- **Building Trustless Systems**: Creating a platform where data integrity is guaranteed by code, not by company promises
-
-We envision a future where digital information is truly personal and sovereign, empowering individuals with complete autonomy over their digital assets.
+The long-term vision is to give every research group, journal club, university course, and student society a shared, censorship-resistant ledger of who reviewed what. By anchoring only the review fingerprint (content_hash) on-chain, the system respects the privacy of in-progress drafts while making the *act* of reviewing provable and publicly auditable. Over time, the same primitive can back peer review for open-source code, grant proposals, conference talks, and student assignments.
 
 ## Key Features
+- `submit_review(reviewer, paper_id, content_hash, score)` — records a single immutable review per (reviewer, paper_id) pair, emits a `review_submitted` Soroban event, and returns the global review index.
+- `view_reviews(paper_id)` — returns the number of reviews submitted for a given paper; safe to call on un-reviewed papers (returns 0).
+- `verify_reviewer(reviewer, paper_id)` — returns `true` if a reviewer has already covered a paper, letting frontends disable duplicate submissions.
+- `aggregate_score(paper_id)` — returns the sum of all submitted scores for a paper; off-chain clients divide by `view_reviews` to compute the mean.
+- `paper_snapshot(paper_id)` — bundles the review count and the score sum in a single call so dashboards only need one round-trip.
+- `total_reviews()` — global counter of every review ever submitted, useful for analytics and milestone tracking.
+- One-reviewer-one-paper enforcement plus a `require_auth()` signature requirement, so reviews are Sybil-resistant and attributable to a Stellar address.
 
-### 1. **Simple Note Creation**
+## Contract
 
-- Create notes with just one function call
-- Specify title and content for each note
-- Automated ID generation for unique identification
-- Persistent storage on the Stellar blockchain
-
-### 2. **Efficient Data Retrieval**
-
-- Fetch all stored notes in a single call
-- Structured data representation for easy frontend integration
-- Quick access to your entire note collection
-- Real-time synchronization with the blockchain state
-
-### 3. **Secure Deletion**
-
-- Remove specific notes using their unique IDs
-- Permanent removal from the contract storage
-- Clean and efficient storage management
-- Immediate update of the note list after deletion
-
-### 4. **Transparency and Security**
-
-- View all note activities on the blockchain
-- Blockchain-based verification of all storage actions
-- Immutable records of note creation and deletion
-- Protected against unauthorized modifications
-
-### 5. **Stellar Network Integration**
-
-- Leverages the high speed and low cost of Stellar
-- Built using the modern Soroban Smart Contract SDK
-- Scalable architecture for growing note collections
-- Interoperable with other Stellar-based services
-
-## Contract Details
-
-- Contract Address: CBLU4IUASQ4WUMOXBFLZRSBBLILGOH33GS4LUPKFBCCCMJCDQNMF7G2M
-  (Screenshot has been removed)
+- **Network:** Stellar Testnet (Public)
+- **Scope:** education dApp — see `contracts/peer_review_log/src/lib.rs` for the full peer_review_log business logic.
+- **Functions exposed:** see `Key Features` above and the `pub fn` list in `lib.rs`.
+- **Contract ID:** `CDNDFHMZZ7T7BUOXRNK5P3HAWREK45JFPQEKKWKHPO4ADRVQECA43SKF`
+- **Explorer template:** `https://stellar.expert/explorer/testnet/tx/11cf1fee9633d29c8c4dfcc8353ccb4305a7468c87568f9813e89a3275a8f09e`
 
 ## Future Scope
+- **Persistent storage migration** — move per-review records from instance storage to a `Persistent` storage bucket so individual reviews (not just aggregates) can be queried on-chain at a low cost.
+- **Per-reviewer reputation** — track how many reviews each address has submitted and expose a `reputation` getter, so professors and DAO curators can weight reviews by track record.
+- **IPFS content anchoring** — accept an IPFS CID in addition to a content hash, and verify it via a Soroban `crypto` helper, so the actual review text is publicly retrievable but not co-located with the ledger.
+- **Weighted / categorical scoring** — extend `score` to a struct (e.g. `Originality`, `Clarity`, `Rigor`) so `aggregate_score` can return per-dimension sums, matching real rubrics used in academic peer review.
+- **Frontend dashboard** — build a Freighter-connected UI that lists papers, surfaces `view_reviews` and `aggregate_score` for each, and lets authenticated students submit a review in a single click.
 
-### Short-Term Enhancements
+## Profile
 
-1. **Note Encryption**: Support for end-to-end encryption of note content for enhanced privacy
-2. **Category Management**: Add tags and categories to organize notes efficiently
-3. **Rich Text Support**: Extend support beyond plain text to include Markdown and formatted content
-4. **Search Functionality**: Implement advanced search filters for large note collections
-
-### Medium-Term Development
-
-5. **Collaborative Notes**: Implement multi-signature requirements for shared or collaborative note-taking
-   - Shared access for multiple addresses
-   - Permission-based editing and viewing
-   - Version history tracking
-6. **Notification System**: Off-chain bridge to alert users of new updates or shared notes
-7. **Asset Attachment**: Capability to attach digital assets or tokens to specific notes
-8. **Inter-Contract Integration**: Allow other smart contracts to interact with and store data in the notes contract
-
-### Long-Term Vision
-
-9. **Cross-Chain Synchronization**: Extend note storage to multiple blockchain networks
-10. **Decentralized UI Hosting**: Host the frontend on IPFS or similar decentralized platforms
-11. **AI-Powered Summarization**: Optional integration with AI to help users summarize their notes
-12. **Privacy Layers**: Implement zero-knowledge proofs for completely private note content
-13. **DAO Governance**: Community-driven protocol improvements and feature prioritization
-14. **Identity Management**: Integration with decentralized identity (DID) systems for user management
-
-### Enterprise Features
-
-15. **Corporate Documentation**: Adapt the system for secure corporate record-keeping
-16. **Immutable Logging**: Create time-locked logs for audit purposes
-17. **Automated Reporting**: Automatic note triggers for periodic reporting
-18. **Multi-Language Support**: Expand accessibility with internationalization
-
----
-
-## Technical Requirements
-
-- Soroban SDK
-- Rust programming language
-- Stellar blockchain network
-
-## Getting Started
-
-Deploy the smart contract to Stellar's Soroban network and interact with it using the three main functions:
-
-- `create_note()` - Create a new note with a title and content
-- `get_notes()` - Retrieve all stored notes from the contract
-- `delete_note()` - Remove a specific note by its ID
-
----
-
-**Stellar Notes DApp** - Securing Your Thoughts on the Blockchain
+- **Name:** <!-- Fill github name -->
+- **Project:** `peer_review_log` (education)
+- **Built with:** Soroban SDK 25, Rust, Stellar Testnet
