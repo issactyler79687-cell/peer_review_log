@@ -1,0 +1,32 @@
+{
+  "name": "peer-review-log-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config.mjs",
+    "type-check": "tsc -b",
+    "build": "tsc -b && vite build --config vite.config.mjs",
+    "preview": "vite preview --config vite.config.mjs"
+  },
+  "dependencies": {
+    "@creit-tech/stellar-wallets-kit": "npm:@jsr/creit-tech__stellar-wallets-kit@^2.5.0",
+    "@stellar/stellar-sdk": "^14.3.0",
+    "buffer": "^6.0.3",
+    "peer_review_log": "file:../packages/peer_review_log",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.6.0",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.7"
+  },
+  "overrides": {
+    "axios": "1.18.1",
+    "protobufjs": "7.6.5"
+  }
+}

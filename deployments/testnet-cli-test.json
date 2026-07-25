@@ -1,0 +1,17 @@
+{
+    "network":  "testnet",
+    "contractId":  "CA5J2DIS47ZNE27KQQ33QTV3GHM4QI3Q263Y2UBH3OYX7GPNPW5G4UVY",
+    "testerIdentity":  "peer_review_cli_tester",
+    "testerAddress":  "GCRABUNG7FOPMPZJGCM7YND3DXO7NBZLMIDBN4KXVJGXKB64MWRPUQM3",
+    "paperId":  "20260725225005",
+    "score":  85,
+    "reviewId":  2,
+    "contentHash":  "c7424fb2f80f9054f0e7a06a8d9b1ba7f87c688d1b9116f82411e86fbc1aaae5",
+    "transactionHash":  "e4b4e3e98493a989f16de1ac0602406ca9f86e5e83241ac12b2e0a592fb6a993",
+    "explorerUrl":  "https://stellar.expert/explorer/testnet/tx/e4b4e3e98493a989f16de1ac0602406ca9f86e5e83241ac12b2e0a592fb6a993",
+    "successful":  true,
+    "ledger":  "3795272",
+    "createdAt":  "2026-07-25T15:50:14Z",
+    "totalReviewsAfter":  "2",
+    "paperSnapshotAfter":  "{\"average_score\":85,\"paper_id\":20260725225005,\"review_count\":1,\"score_sum\":85}"
+}

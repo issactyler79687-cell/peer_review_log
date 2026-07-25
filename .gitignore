@@ -1,0 +1,31 @@
+# Rust and Soroban build output
+target/
+.stellar/
+# Contract test snapshots
+contracts/**/test_snapshots/
+# Frontend dependencies and builds
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+# Environment files
+.env
+.env.local
+.env.*.local
+# Temporary deployment files
+deploy-output.txt
+deploy-stdout.tmp
+deploy-stderr.tmp
+version-check.txt
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+# Backup files
+*.bak
+*.tmp
+**/node_modules/
+frontend/.env
+frontend/.env.local
+frontend/*.tsbuildinfo
+*.log

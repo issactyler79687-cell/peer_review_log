@@ -1,0 +1,7 @@
+export const TESTNET_DEPLOYMENT = {
+  network: "testnet",
+  contractId: "CA5J2DIS47ZNE27KQQ33QTV3GHM4QI3Q263Y2UBH3OYX7GPNPW5G4UVY",
+  contractAlias: "peer_review_log_level2",
+  deployer: "GBEG2YGMQD4TLEE5OYK2HCTJFWRXN7SXRHOXHTTGUWAKN45EK6BM6BIO",
+  deployedAt: "2026-07-25T12:48:12Z",
+} as const;
